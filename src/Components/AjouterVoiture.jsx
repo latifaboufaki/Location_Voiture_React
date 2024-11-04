@@ -38,7 +38,18 @@ const AjouterVoiture = ({ onAdd }) => {
   const [marque, setMarque] = useState('');
   const [typeCarburant, setTypeCarburant] = useState('');
   const [prixLocation, setPrixLocation] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +64,7 @@ const AjouterVoiture = ({ onAdd }) => {
     setMarque('');
     setTypeCarburant('');
     setPrixLocation('');
-    setImage('');
+    setImage(null);
   };
 
   return (
@@ -61,7 +72,7 @@ const AjouterVoiture = ({ onAdd }) => {
       <Input type="text" placeholder="Marque" value={marque} onChange={(e) => setMarque(e.target.value)} required />
       <Input type="text" placeholder="Type Carburant" value={typeCarburant} onChange={(e) => setTypeCarburant(e.target.value)} required />
       <Input type="number" placeholder="Prix Location" value={prixLocation} onChange={(e) => setPrixLocation(e.target.value)} required />
-      <Input type="file" placeholder="Image" value={image} onChange={(e) => setImage(e.target.value)} required />
+      <Input type="file" onChange={handleImageChange} required />
       <Button type="submit">Ajouter Voiture</Button>
     </FormContainer>
   );
